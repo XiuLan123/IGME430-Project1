@@ -1,0 +1,89 @@
+<html>
+
+<head>
+    <title>Link Client</title>
+    <style>
+        header {
+            background-color: pink;
+            color: yellow;
+            font-size: 2em;
+            padding: 1em;
+        }
+
+        h1 {
+            font-family: fantasy;
+            filter: drop-shadow(5px 5px 2px #4444dd);
+        }
+
+        section {
+            border-bottom: 1px dashed gray;
+        }
+    </style>
+    <script>
+        const handleResponse = (e) => {
+            console.log("e.target =", e.target); //here. e.target is the xhr object
+            console.log("e.target.response = ", e.target.response);
+            const obj = JSON.parse(e.target.response); //turn it back into an object
+            console.log("obj=", obj);
+            console.log(obj.links);
+
+            let linksContainer = document.querySelector("#linksContainer");
+            for (i in obj.links) {
+                linksContainer.innerHTML +=
+                    `<br><b><a href="${obj.links[i].link}">${obj.links[i].name}</a></b>`;
+                linksContainer.innerHTML += `<br>${obj.links[i].note}`;
+            }
+        }
+
+        const downloadLink = (e) => {
+            console.log(`An element of id=${e.target.id} was clicked!`);
+            const nameField = document.querySelector("#nameField");
+
+            let linksURL = "/get-links";
+            if (e.target.id == "getLinkBttn") {
+                linksURL = `/get-links?name=${nameField.value}`;
+            } else {
+                linksURL = "/get-links";
+            }
+
+            const xhr = new XMLHttpRequest();
+            xhr.onload = handleResponse;
+            xhr.open("GET", linksURL);
+            xhr.setRequestHeader('Accept', "application/javascript");
+            xhr.send();
+        }
+
+        const init = () => {
+            document.querySelector("#getLinkBttn").addEventListener("click", downloadLink);
+            document.querySelector("#getLinksBttn").addEventListener("click", downloadLink);
+        }
+
+        window.onload = init;
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>Are you ready to get a links</h1>
+    </header>
+
+    <section>
+        <h2>Just have time for one link?</h2>
+        <label for="name">Name: </label>
+        <input id="nameField" type="text" />
+        <p><button id="getLinkBttn">Show me a link!</button></p>
+        <div id="linkContainer">
+
+        </div>
+    </section>
+
+    <section>
+        <h2>You want all the links?</h2>
+        <p><button id="getLinksBttn">Show me all!</button></p>
+        <div id="linksContainer">
+
+        </div>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+<html>
+
+<head>
+    <title>Link Submit Client</title>
+    <style>
+        header {
+            background-color: pink;
+            color: yellow;
+            font-size: 2em;
+            padding: 1em;
+        }
+
+        h1 {
+            font-family: fantasy;
+            filter: drop-shadow(5px 5px 2px #4444dd);
+        }
+
+        section {
+            border-bottom: 1px dashed gray;
+        }
+    </style>
+    <script>
+        "use strict"; // because I got rid of client-side babel
+        const parseJSON = (xhr, content) => {
+            if (xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json') {
+                const obj = JSON.parse(xhr.response);
+                console.dir(obj);
+
+                if (obj.message) {
+                    content.innerHTML += `<p>${obj.message}</p>`;
+                }
+            }
+        };
+
+        const handleResponse = (xhr) => {
+            const content = document.querySelector('#content');
+
+            switch (xhr.status) {
+                case 200:
+                    content.innerHTML = '<b>Success!</b>';
+                    break;
+                case 201:
+                    content.innerHTML = '<b>Created!</b>';
+                    break;
+                case 204:
+                    content.innerHTML = '<b>Updated (No Content)!</b>';
+                    break;
+                case 400:
+                    content.innerHTML = '<b>Bad Request!</b>';
+                    break;
+                default:
+                    content.innerHTML = '<b>Error code not implemented by client</b>';
+            }
+
+            parseJSON(xhr, content);
+        };
+
+        const uploadLink = (e) => {
+            // remember that an `Event` object gets passed along every time that an event handler or listener calls a function
+            // the `target` property of that event points at the element that sent the event, in this case a button
+            console.log(`An element of id=${e.target.id} was clicked!`);
+
+            const nameField = document.querySelector("#nameField");
+            const linkField = document.querySelector("#linkField");
+            const noteField = document.querySelector("#noteField");
+
+            let addLinkURL = "/add-link";
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", addLinkURL);
+            //with XHR, after we open a connection, but before we send(), we can set 1 or more HTTP request headers
+            //this isn't strictly necessary  because "/random-joke" sends JSON by default
+            xhr.setRequestHeader('Accept', 'application/json');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            xhr.onload = () => handleResponse(xhr);
+
+            const formData = `name=${nameField.value}&link=${linkField.value}&note=${noteField.value}`;
+            xhr.send(formData);
+        }
+
+        const init = () => {
+            // An Event *Handler*
+            // document.querySelector("#btnJoke").onclick = downloadJoke; // same as below, less typing, use which ever version you prefer
+
+            // An Event *Listener*
+
+            document.querySelector("#btnSend").addEventListener("click", uploadLink);
+
+            // **Actually, event handlers and listeners are NOT exactly the same in all use cases - what ARE the differences?**
+        }
+
+        window.onload = init;
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>Are you ready to submit a Link?</h1>
+    </header>
+
+    <section>
+        <h2>Link</h2>
+        <label for="name">Name: </label>
+        <input id="nameField" type="text" />
+        <label for="link">Link: </label>
+        <input id="linkField" type="text" min="0" max="100" />
+        <label for="note">Note: </label>
+        <input id="noteField" type="text" min="0" max="1000" />
+        <button id="btnSend">Add Link</button>
+    </section>
+    </section>
+    <section id="content">
+    </section>
+
+</body>
+
+</html>
