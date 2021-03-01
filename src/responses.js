@@ -1,16 +1,16 @@
 const linknote = {
-  'links': [
+  links: [
     {
       link: 'https://people.rit.edu/jz2728',
       name: 'My first link',
       note: 'This is the default link',
-    }
+    },
   ],
 };
 
 const sendJSONResponse = (request, response, responseCode, object) => {
   response.writeHead(responseCode, {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   });
   response.write(JSON.stringify(object));
   response.end();
@@ -19,12 +19,12 @@ const sendJSONResponse = (request, response, responseCode, object) => {
 // "Meta" refers to *meta data*, in this case the HTTP headers
 const sendJSONResponseMeta = (request, response, responseCode) => {
   response.writeHead(responseCode, {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   });
   response.end();
 };
 
-const getLinks = (request, response, params) => {
+const getLinks = (request, response) => {
   sendJSONResponse(request, response, 200, linknote);
 };
 

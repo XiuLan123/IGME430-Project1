@@ -13,7 +13,7 @@ const urlStruct = {
   '/': htmlHandler.getHomeClientResponse,
   '/link-submit': htmlHandler.getLinkSubmitClientPageResponse,
   '/links-client': htmlHandler.getLinksClientResponse,
-  '/home-client':htmlHandler.getHomeClientResponse,
+  '/home-client': htmlHandler.getHomeClientResponse,
   '/get-links': jsonHandler.getLinks,
   notFound: htmlHandler.get404Response,
 };
@@ -24,7 +24,7 @@ const handlePost = (request, response, parsedUrl) => {
 
     // https://nodejs.org/api/http.html
     request.on('error', (err) => {
-      console.dir(error);
+      console.dir(err);
       response.statusCode = 400;
       response.end();
     });
