@@ -4,6 +4,7 @@ const linkSubmitClientPage = fs.readFileSync(`${__dirname}/../client/link-submit
 const linksClientPage = fs.readFileSync(`${__dirname}/../client/links-client.html`);
 const homeClientPage = fs.readFileSync(`${__dirname}/../client/home-client.html`);
 const errorPage = fs.readFileSync(`${__dirname}/../client/error.html`);
+const adminClientPage = fs.readFileSync(`${__dirname}/../client/admin-client.html`);
 
 const get404Response = (request, response) => {
   response.writeHead(404, {
@@ -37,7 +38,16 @@ const getHomeClientResponse = (request, response) => {
   response.end();
 };
 
+const getAdminClientPage = (request, response) => {
+  response.writeHead(200, {
+    'Content-Type': 'text/html',
+  });
+  response.write(adminClientPage);
+  response.end();
+};
+
 module.exports.get404Response = get404Response;
 module.exports.getLinksClientResponse = getLinksClientResponse;
 module.exports.getLinkSubmitClientPageResponse = getLinkSubmitClientPageResponse;
 module.exports.getHomeClientResponse = getHomeClientResponse;
+module.exports.getAdminClientPage = getAdminClientPage;

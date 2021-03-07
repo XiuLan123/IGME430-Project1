@@ -1,11 +1,13 @@
 const linknote = {
-  links: [
-    {
-      link: 'https://people.rit.edu/jz2728',
-      name: 'My first link',
-      note: 'This is the default link',
-    },
-  ],
+  links: [{
+    link: 'https://people.rit.edu/jz2728',
+    name: 'My first link',
+    note: 'This is the default link',
+    color: '#FFFFFF',
+  }],
+  counter: {
+    number: 1,
+  },
 };
 
 const sendJSONResponse = (request, response, responseCode, object) => {
@@ -24,8 +26,16 @@ const sendJSONResponseMeta = (request, response, responseCode) => {
   response.end();
 };
 
-const getLinks = (request, response) => {
-  sendJSONResponse(request, response, 200, linknote);
+const getLinks = (request, response, params) => {
+  let responseObj = linknote;
+  if (params != null) {
+    for (let i = 0; i < linknote.links.length; i += 1) {
+      if (linknote.links[i].name === params.name) {
+        responseObj = linknote.links[i];
+      }
+    }
+  }
+  sendJSONResponse(request, response, 200, responseObj);
 };
 
 const addLink = (request, response, body) => {
@@ -42,22 +52,24 @@ const addLink = (request, response, body) => {
   }
 
   // we DID get a name and age
-  if (linknote.links[1]) { // if the user exists
-    responseCode = 204;
-    linknote.links[1].link = body.link; // update
-    return sendJSONResponseMeta(request, response, responseCode);
-  }
+  // if (linknote.links[linknote.links.length]) { // if the user exists
+  //  responseCode = 204;
+  //  linknote.links[linknote.links.length].link = body.link; // update
+  //  return sendJSONResponseMeta(request, response, responseCode);
+  // }
 
   // if the user does not exist
-  linknote.links[1] = {}; // make a new user
+  linknote.links[linknote.counter.number] = {}; // make a new user
   // initialize values
-  linknote.links[1].name = body.name;
-  linknote.links[1].link = body.link;
-  linknote.links[1].note = body.note;
+  linknote.links[linknote.counter.number].name = body.name;
+  linknote.links[linknote.counter.number].link = body.link;
+  linknote.links[linknote.counter.number].note = body.note;
+  linknote.links[linknote.counter.number].color = body.color;
 
   responseCode = 201; // send "created" status code
-  responseJSON.id = linknote.links[1].name;
+  responseJSON.id = linknote.links[linknote.counter.number].name;
   responseJSON.message = 'Created Successfully';
+  linknote.counter.number += 1;
   return sendJSONResponse(request, response, responseCode, responseJSON);
 };
 

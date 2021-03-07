@@ -28,10 +28,46 @@
             console.log(obj.links);
 
             let linksContainer = document.querySelector("#linksContainer");
-            for (i in obj.links) {
+            if (obj.links != null) {
+                for (i in obj.links) {
+                    linksContainer.innerHTML +=
+                        `<br>
+                     <figure style="
+                     border:2px solid rgb(0, 0, 0);
+                     border-radius: 50%;
+                     width: 10px;height: 10px;
+                     background:${obj.links[i].color};
+                     float:left;
+                     margin:5px;
+                     "></figure>
+                     <details>
+                     <summary>
+                        <b>${obj.links[i].name}</b>
+                     </summary>
+                     <a href="${obj.links[i].link}">Link</a>
+                     <p>${obj.links[i].note}</p>
+                     </details>
+                    `;
+                }
+            } else {
                 linksContainer.innerHTML +=
-                    `<br><b><a href="${obj.links[i].link}">${obj.links[i].name}</a></b>`;
-                linksContainer.innerHTML += `<br>${obj.links[i].note}`;
+                    `<br>
+                     <figure style="
+                     border:2px solid rgb(0, 0, 0);
+                     border-radius: 50%;
+                     width: 10px;height: 10px;
+                     background:${obj.color};
+                     float:left;
+                     margin:5px;
+                     "></figure>
+                     <details>
+                     <summary>
+                        <b>${obj.name}</b>
+                     </summary>
+                     <a href="${obj.link}">Link</a>
+                     <p>${obj.note}</p>
+                     </details>
+                    `;
             }
         }
 
@@ -66,7 +102,12 @@
     <header>
         <h1>Are you ready to get a links</h1>
     </header>
-
+    <nav>
+        <a href="/home-client">Home</a>
+        <a href="/admin-client">Admin</a>
+        <a href="/link-submit">Submit</a>
+        <a href="/links-client">Links</a>
+    </nav>
     <section>
         <h2>Just have time for one link?</h2>
         <label for="name">Name: </label>
