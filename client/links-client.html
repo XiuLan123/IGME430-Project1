@@ -93,7 +93,7 @@
                 linksContainer.innerHTML = "";
                 for (i in obj.links) {
                     linksContainer.innerHTML +=
-                        `<div class="linksBlock" onclick="window.open('${obj.links[i].link}')">
+                    `<div class="linksBlock" onclick="window.open('${obj.links[i].link}')">
                         <div class="linksTitleArea">
                         <figure style="
                             background:${obj.links[i].color};
@@ -112,24 +112,25 @@
                     `;
                 }
             } else {
+                linksContainer.innerHTML = "";
                 linksContainer.innerHTML +=
-                    `<br>
-                     <figure style="
-                     border:2px solid rgb(0, 0, 0);
-                     border-radius: 50%;
-                     width: 10px;
-                     height: 10px;
-                     background:${obj.color};
-                     margin:5px;
-                     "></figure>
-                     <details>
-                     <summary>
-                        <b>${obj.name}</b>
-                     </summary>
-                     <a href="${obj.link}">Link</a>
-                     <p>${obj.note}</p>
-                     </details>
-                    `;
+                `<div class="linksBlock" onclick="window.open('${obj.links[i].link}')">
+                    <div class="linksTitleArea">
+                    <figure style="
+                        background:${obj.links[i].color};
+                        border: 2px solid rgb(0, 0, 0);
+                        border-radius: 50%;
+                        width: 2vw;
+                        height: 2vw;
+                        margin:auto;
+                    "></figure>
+                    <p class="linksTitle">
+                        <b>${obj.links[i].name}</b>
+                    </p>
+                    </div>
+                        <p class="linksNote">${obj.links[i].note}</p>
+                    </div>
+                `;
             }
         }
 
