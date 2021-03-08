@@ -24,17 +24,45 @@
 
         .linksBlock {
             background-color: blueviolet;
-            border-radius: 10px;
+            border-radius: 1vw;
             width: 25vw;
-            margin: 10px;
+            height: 25vh;
+            margin: 1vw;
             margin-bottom: 5vh;
             display: inline-block;
+            border: 2px solid white;
+            box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+            overflow: hidden;
+        }
+
+        .linksBlock:hover {
+            height: 30vh;
+            box-shadow: rgba(0, 0, 0, 0.38) 0px 10px 20px, rgba(0, 0, 0, 0.46) 0px 6px 6px;
+            transition-duration: 0.2s;
+        }
+        .linksTitleArea{
+            display: flex;
+        }
+
+        .linksTitle {
+            margin-top: 4vh;
+            margin-bottom: 4vh;
+            margin-left: 4vw;
+            margin-right: 4vw;
+            padding-top: 2vh;
+            padding-bottom: 1vh;
+            font-size: 40px;
+            font-weight: bold;
+            background-color: white;
+            border-radius: 1vw;
+        }
+
+        .linksNote {
+            margin: 2vw;
         }
 
         #linksContainer {
             text-align: center;
-            border-radius: 10px;
-            border: 2px solid black;
             padding: 2vw;
         }
 
@@ -62,24 +90,24 @@
 
             let linksContainer = document.querySelector("#linksContainer");
             if (obj.links != null) {
+                linksContainer.innerHTML = "";
                 for (i in obj.links) {
                     linksContainer.innerHTML +=
-                        `<div class="linksBlock">
+                        `<div class="linksBlock" onclick="window.open('${obj.links[i].link}')">
+                        <div class="linksTitleArea">
                         <figure style="
-                            border:2px solid rgb(0, 0, 0);
-                            border-radius: 50%;
-                            width: 10px;height: 10px;
                             background:${obj.links[i].color};
-                            float:left;
-                            margin:5px;
+                            border: 2px solid rgb(0, 0, 0);
+                            border-radius: 50%;
+                            width: 2vw;
+                            height: 2vw;
+                            margin:auto;
                         "></figure>
-                     <details>
-                        <summary>
+                        <p class="linksTitle">
                             <b>${obj.links[i].name}</b>
-                        </summary>
-                     <a href="${obj.links[i].link}">Link</a>
-                     <p>${obj.links[i].note}</p>
-                     </details>
+                        </p>
+                        </div>
+                        <p class="linksNote">${obj.links[i].note}</p>
                      </div>
                     `;
                 }
@@ -89,9 +117,9 @@
                      <figure style="
                      border:2px solid rgb(0, 0, 0);
                      border-radius: 50%;
-                     width: 10px;height: 10px;
+                     width: 10px;
+                     height: 10px;
                      background:${obj.color};
-                     float:left;
                      margin:5px;
                      "></figure>
                      <details>
