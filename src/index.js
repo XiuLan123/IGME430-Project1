@@ -16,7 +16,7 @@ const urlStruct = {
   '/links-client': htmlHandler.getLinksClientResponse,
   '/home-client': htmlHandler.getHomeClientResponse,
   '/admin-client': htmlHandler.getAdminClientPage,
-  '/get-links': jsonHandler.getLinks,
+  '/get-links': jsonHandler.getLinkResponse,
   '/get-icon': mediaHandler.getIconResponse,
   '/get-logo': mediaHandler.getLogoResponse,
   '/get-style': mediaHandler.getStyleResponse,
@@ -65,7 +65,7 @@ const onRequest = (request, response) => {
   const httpMethod = request.method;
 
   if (urlStruct[pathname]) {
-    urlStruct[pathname](request, response, params, acceptedTypes, httpMethod);
+    urlStruct[pathname](request, response, params, acceptedTypes[0], httpMethod);
   } else {
     urlStruct.notFound(request, response);
   }
