@@ -1,7 +1,10 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <title>Link Submit Client</title>
+    <link rel="icon" href="get-icon" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="get-style" />
     <style>
         header {
             background-color: pink;
@@ -76,7 +79,8 @@
 
             xhr.onload = () => handleResponse(xhr);
 
-            const formData = `name=${nameField.value}&link=${linkField.value}&note=${noteField.value}&color=${colorPicker.value}`;
+            const formData =
+                `name=${nameField.value}&link=${linkField.value}&note=${noteField.value}&color=${colorPicker.value}`;
             xhr.send(formData);
         }
 
@@ -100,10 +104,13 @@
         <h1>Are you ready to submit a Link?</h1>
     </header>
     <nav>
-        <a href="/home-client">Home</a>
-        <a href="/admin-client">Admin</a>
-        <a href="/link-submit">Submit</a>
-        <a href="/links-client">Links</a>
+        <a class="navLinks" href="/home-client">Home</a>
+        <br>
+        <a class="navLinks" href="/admin-client">Admin</a>
+        <br>
+        <a class="navLinks" href="/link-submit">Submit</a>
+        <br>
+        <a class="navLinks" href="/links-client">Links</a>
     </nav>
     <section>
         <h2>Link</h2>
@@ -113,7 +120,7 @@
         <input id="linkField" type="text" min="0" max="100" />
         <label for="note">Note: </label>
         <input id="noteField" type="text" min="0" max="1000" />
-        <input id="colorPicker" type="color"/>
+        <input id="colorPicker" type="color" />
         <button id="btnSend">Add Link</button>
     </section>
     </section>

@@ -5,6 +5,7 @@ const query = require('querystring');
 
 const htmlHandler = require('./htmlResponses.js');
 const jsonHandler = require('./jsonResponses.js');
+const mediaHandler = require('./mediaResponses.js');
 
 // 3 - locally this will be 3000, on Heroku it will be assigned
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
@@ -16,6 +17,9 @@ const urlStruct = {
   '/home-client': htmlHandler.getHomeClientResponse,
   '/admin-client': htmlHandler.getAdminClientPage,
   '/get-links': jsonHandler.getLinks,
+  '/get-icon': mediaHandler.getIconResponse,
+  '/get-logo': mediaHandler.getLogoResponse,
+  '/get-style': mediaHandler.getStyleResponse,
   notFound: htmlHandler.get404Response,
 };
 

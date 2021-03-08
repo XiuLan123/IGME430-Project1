@@ -1,0 +1,22 @@
+nav {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    float: right;
+}
+
+.navLinks {
+    text-decoration: none;
+}
+
+.navLinks:link {
+    color: black;
+}
+
+.navLinks:visited {
+    color: black;
+}
+
+.navLinks:hover {
+    color: rgb(138, 138, 138);
+}

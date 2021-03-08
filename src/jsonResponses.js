@@ -1,10 +1,23 @@
 const linknote = {
   links: [{
-    link: 'https://people.rit.edu/jz2728',
-    name: 'My first link',
-    note: 'This is the default link',
-    color: '#FFFFFF',
-  }],
+      link: 'https://people.rit.edu/jz2728',
+      name: 'My first link',
+      note: 'This is the default link',
+      color: '#FFFFFF',
+    },
+    {
+      link: 'https://people.rit.edu/jz2728',
+      name: 'My first link',
+      note: 'This is the default link',
+      color: '#FFFFFF',
+    },
+    {
+      link: 'https://people.rit.edu/jz2728',
+      name: 'My first link',
+      note: 'This is the default link',
+      color: '#FFFFFF',
+    }
+  ],
   counter: {
     number: 1,
   },
