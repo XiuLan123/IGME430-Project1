@@ -124,15 +124,16 @@ const addLink = (request, response, body) => {
   // }
 
   // if the user does not exist
-  linknote.links[linknote.counter.number] = {}; // make a new user
-  // initialize values
-  linknote.links[linknote.counter.number].name = body.name;
-  linknote.links[linknote.counter.number].link = body.link;
-  linknote.links[linknote.counter.number].note = body.note;
-  linknote.links[linknote.counter.number].color = body.color;
+  const newItem = {
+    link: body.name,
+    name: body.link,
+    note: body.note,
+    color: body.color,
+  };
+  linknote.links.push(newItem);
 
   responseCode = 201; // send "created" status code
-  responseJSON.id = linknote.links[linknote.counter.number].name;
+  responseJSON.id = body.name;
   responseJSON.message = 'Created Successfully';
   linknote.counter.number += 1;
   return sendJSONResponse(request, response, responseCode, responseJSON);
