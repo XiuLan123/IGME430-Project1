@@ -1,22 +1,22 @@
 const linknote = {
   links: [{
-    link: 'https://people.rit.edu/jz2728',
-    name: 'My first links',
-    note: 'This is the default link',
-    color: '#FFFFFF',
-  },
-  {
-    link: 'https://people.rit.edu/jz2728',
-    name: 'My first linkss',
-    note: 'This is the default link',
-    color: '#FFFFFF',
-  },
-  {
-    link: 'https://people.rit.edu/jz2728',
-    name: 'My first linksss',
-    note: 'This is the default link',
-    color: '#FFFFFF',
-  },
+      link: 'https://people.rit.edu/jz2728',
+      name: 'My first links',
+      note: 'This is the default link',
+      color: '#FFFFFF',
+    },
+    {
+      link: 'https://people.rit.edu/jz2728',
+      name: 'My first linkss',
+      note: 'This is the default link',
+      color: '#FFFFFF',
+    },
+    {
+      link: 'https://people.rit.edu/jz2728',
+      name: 'My first linksss',
+      note: 'This is the default link',
+      color: '#FFFFFF',
+    },
   ],
   counter: {
     number: 1,
@@ -108,20 +108,24 @@ const addLink = (request, response, body) => {
   let responseCode = 400; // 400=bad request
   const responseJSON = {
     id: 'missingParams',
-    message: 'name and age are both required',
+    message: 'name, age and link are required',
   };
 
   // missing name or age?
-  if (!body.name || !body.link) {
+  if (!body.name || !body.link || !body.note || !body.color) {
     return sendJSONResponse(request, response, responseCode, responseJSON);
   }
 
-  // we DID get a name and age
-  // if (linknote.links[linknote.links.length]) { // if the user exists
-  //  responseCode = 204;
-  //  linknote.links[linknote.links.length].link = body.link; // update
-  //  return sendJSONResponseMeta(request, response, responseCode);
-  // }
+  for (let i = 0; i < linknote.links.length; i += 1) {
+    if (linknote.links[i].name === body.name) {
+      responseCode = 204;
+      linknote.links[i].link = body.link;
+      linknote.links[i].note = body.note;
+      linknote.links[i].color = body.color;
+      i = linknote.links.length;
+      return sendJSONResponseHeaders(request, response, responseCode);
+    }
+  }
 
   // if the user does not exist
   const newItem = {
@@ -134,7 +138,7 @@ const addLink = (request, response, body) => {
 
   responseCode = 201; // send "created" status code
   responseJSON.id = body.name;
-  responseJSON.message = 'Created Successfully';
+  responseJSON.message = 'Link Created Successfully';
   linknote.counter.number += 1;
   return sendJSONResponse(request, response, responseCode, responseJSON);
 };

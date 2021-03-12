@@ -5,21 +5,115 @@
     <title>Link Submit Client</title>
     <link rel="icon" href="get-icon" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="get-style" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
     <style>
-        header {
-            background-color: pink;
-            color: yellow;
-            font-size: 2em;
-            padding: 1em;
+        body {
+            background-color: #ffffff;
         }
 
-        h1 {
-            font-family: fantasy;
-            filter: drop-shadow(5px 5px 2px #4444dd);
+        .linksBlock {
+            background-color: #0f59a4;
+            border-radius: 1vw;
+            width: 24vw;
+            height: 15vh;
+            margin: 1vw;
+            margin-bottom: 5vh;
+            display: inline-block;
+            border: 2px solid white;
+            box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .linksBlock:hover {
+            height: 40vh;
+            box-shadow: rgba(0, 0, 0, 0.38) 0px 10px 20px, rgba(0, 0, 0, 0.46) 0px 6px 6px;
+            transition-duration: 0.2s;
+        }
+
+        .linksTitleArea {
+            display: flex;
+            text-align: center;
+        }
+
+        .linksTitle {
+            margin: auto;
+            padding-top: 2vh;
+            padding-bottom: 1vh;
+            font-size: 2em;
+            font-weight: bold;
+            border-radius: 1vw;
+            cursor: pointer;
+        }
+
+        .linksTitle:hover {
+            color: rgb(255, 255, 255);
+        }
+
+        .linksNote {
+            margin-top: 2vh;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        #linksContainer {
+            text-align: center;
+            padding: 2vw;
+        }
+
+        input {
+            border: 0.3em solid #0f59a4;
+            border-radius: 0.5em;
+            display: flex;
+            width: 10em;
+            height: 2em;
+            margin: auto;
+            background: #ffffff;
+            font-size: 1.5em;
         }
 
         section {
-            border-bottom: 1px dashed gray;
+            background-color: #0f59a4;
+            border-radius: 1vw;
+            width: 24vw;
+            height: 15vh;
+            margin: auto;
+            margin-bottom: 5vh;
+            padding: 0 6em 32em 6em;
+            border: 2px solid white;
+            box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        label {
+            font-size: 1.5em;
+        }
+
+        h2{
+            font-size: 3em;
+            color: white;
+        }
+
+        button {
+            margin: 0.5em;
+            width: 8em;
+            height: 2em;
+            font-size: 1.5em;
+            letter-spacing: 0.1em;
+            background-color: #0f59a4;
+            border-radius: 0.5em;
+            border: 3px solid #0f59a4;
+            color: rgb(0, 0, 0);
+        }
+
+        button:hover {
+            background-color: #ffffff;
+        }
+
+        p {
+            display: inline-block;
         }
     </style>
     <script>
@@ -40,19 +134,19 @@
 
             switch (xhr.status) {
                 case 200:
-                    content.innerHTML = '<b>Success!</b>';
+                    content.innerHTML = '<b>Success! </b>';
                     break;
                 case 201:
-                    content.innerHTML = '<b>Created!</b>';
+                    content.innerHTML = '<b>Created! </b>';
                     break;
                 case 204:
-                    content.innerHTML = '<b>Updated (No Content)!</b>';
+                    content.innerHTML = '<b>Updated! </b>';
                     break;
                 case 400:
-                    content.innerHTML = '<b>Bad Request!</b>';
+                    content.innerHTML = '<b>Bad Request! </b>';
                     break;
                 default:
-                    content.innerHTML = '<b>Error code not implemented by client</b>';
+                    content.innerHTML = '<b>Error code not implemented by client </b>';
             }
 
             parseJSON(xhr, content);
@@ -100,9 +194,6 @@
 </head>
 
 <body>
-    <header>
-        <h1>Are you ready to submit a Link?</h1>
-    </header>
     <nav>
         <a class="navLinks" href="/home-client">Home</a>
         <br>
@@ -112,19 +203,22 @@
         <br>
         <a class="navLinks" href="/links-client">Links</a>
     </nav>
+    <header>
+        <h1><u>Http:// Link Sumbit</u></h1>
+    </header>
+    <div id="content">
+    </div>
     <section>
-        <h2>Link</h2>
+        <h2>Create Link</h2>
         <label for="name">Name: </label>
         <input id="nameField" type="text" />
         <label for="link">Link: </label>
         <input id="linkField" type="text" min="0" max="100" />
         <label for="note">Note: </label>
         <input id="noteField" type="text" min="0" max="1000" />
+        <label for="color">Color: </label>
         <input id="colorPicker" type="color" />
         <button id="btnSend">Add Link</button>
-    </section>
-    </section>
-    <section id="content">
     </section>
 
 </body>
