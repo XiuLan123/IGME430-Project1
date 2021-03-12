@@ -5,21 +5,99 @@
     <title>Link Client</title>
     <link rel="icon" href="get-icon" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="get-style" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
     <style>
+        body {
+            background-color: #ffffff;
+        }
+
         header {
-            background-color: pink;
-            color: yellow;
-            font-size: 2em;
+            color: #15559a;
+            font-size: 2vw;
             padding: 1em;
         }
 
         h1 {
             font-family: fantasy;
-            filter: drop-shadow(5px 5px 2px #4444dd);
+            filter: drop-shadow(5px 5px 2px #000522);
+            text-align: center;
+        }
+
+        .linksBlock {
+            background-color: #0f59a4;
+            border-radius: 1vw;
+            width: 24vw;
+            height: 15vh;
+            margin: 1vw;
+            margin-bottom: 5vh;
+            display: inline-block;
+            border: 2px solid white;
+            box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .linksBlock:hover {
+            height: 40vh;
+            box-shadow: rgba(0, 0, 0, 0.38) 0px 10px 20px, rgba(0, 0, 0, 0.46) 0px 6px 6px;
+            transition-duration: 0.2s;
+        }
+
+        .linksTitleArea {
+            display: flex;
+            text-align: center;
+        }
+
+        .linksTitle {
+            margin: auto;
+            padding-top: 2vh;
+            padding-bottom: 1vh;
+            font-size: 2em;
+            font-weight: bold;
+            border-radius: 1vw;
+            cursor: pointer;
+        }
+
+        .linksTitle:hover {
+            color: rgb(255, 255, 255);
+        }
+
+        .linksNote {
+            margin-top: 2vh;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        #linksContainer {
+            text-align: center;
+            padding: 2vw;
         }
 
         section {
-            border-bottom: 1px dashed gray;
+            align-items: center;
+            text-align: center;
+            margin-top: 4vh;
+        }
+
+        button {
+            margin: 0.5em;
+            width: 8em;
+            height: 2em;
+            font-size: 1.5em;
+            letter-spacing: 0.1em;
+            background-color: #0f59a4;
+            border-radius: 0.5em;
+            border: 5px solid #ffffff;
+            color: rgb(0, 0, 0);
+        }
+
+        button:hover {
+            background-color: #ffffff;
+        }
+
+        p {
+            display: inline-block;
         }
     </style>
     <script>
@@ -31,24 +109,39 @@
             console.log(obj.links);
 
             let linksContainer = document.querySelector("#linksContainer");
-            for (i in obj.links) {
-                linksContainer.innerHTML +=
-                    `<br><b><a href="${obj.links[i].link}">${obj.links[i].name}</a></b>`;
-                linksContainer.innerHTML += `<br>${obj.links[i].note}`;
+            if (obj.links != null) {
+                linksContainer.innerHTML = "";
+                for (i in obj.links) {
+                    linksContainer.innerHTML +=
+                        `<div class="linksBlock">
+                        <figure style="
+                        background:${obj.links[i].color};
+                        border: 2px solid rgb(0, 0, 0);
+                        border-radius: 50%;
+                        width: 2vw;
+                        height: 2vw;
+                        margin:auto;
+                        margin-top:2vh;
+                        "></figure>
+                        <div class="linksTitleArea">
+                        <p class="linksTitle" onclick="window.open('${obj.links[i].link}')">
+                            <b><u>Http:// ${obj.links[i].name}</u></b>
+                        </p>
+                        </div>
+                        <p class="linksNote">${obj.links[i].note}</p>
+                        <p><button value="${obj.links[i].name}" onclick="callDeleteLink(value)">Delete</button></p>
+                     </div>
+                    `;
+                }
             }
         }
 
-        const downloadLink = (e) => {
-            console.log(`An element of id=${e.target.id} was clicked!`);
-            const nameField = document.querySelector("#nameField");
+        const init = () => {
+            load();
+        }
 
+        function load() {
             let linksURL = "/get-links";
-            if (e.target.id == "getLinkBttn") {
-                linksURL = `/get-links?name=${nameField.value}`;
-            } else {
-                linksURL = "/get-links";
-            }
-
             const xhr = new XMLHttpRequest();
             xhr.onload = handleResponse;
             xhr.open("GET", linksURL);
@@ -56,8 +149,16 @@
             xhr.send();
         }
 
-        const init = () => {
-            document.querySelector("#getLinksBttn").addEventListener("click", downloadLink);
+        function callDeleteLink(name) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/delete-link");
+            xhr.setRequestHeader('Accept', 'application/json');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            const formData =
+                `name=${name}`;
+            xhr.send(formData);
+            load();
         }
 
         window.onload = init;
@@ -65,9 +166,6 @@
 </head>
 
 <body>
-    <header>
-        <h1>Hello!</h1>
-    </header>
     <nav>
         <a class="navLinks" href="/home-client">Home</a>
         <br>
@@ -77,14 +175,13 @@
         <br>
         <a class="navLinks" href="/links-client">Links</a>
     </nav>
+    <header>
+        <h1><u>Http:// Administrators</u></h1>
+    </header>
     <section>
-        <p><button id="getLinksBttn">Show me all!</button></p>
         <div id="linksContainer">
+
         </div>
-    </section>
-
-    <section>
-
     </section>
 </body>
 

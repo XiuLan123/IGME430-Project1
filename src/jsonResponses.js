@@ -1,19 +1,19 @@
 const linknote = {
   links: [{
     link: 'https://people.rit.edu/jz2728',
-    name: 'My first link',
+    name: 'My first links',
     note: 'This is the default link',
     color: '#FFFFFF',
   },
   {
     link: 'https://people.rit.edu/jz2728',
-    name: 'My first link',
+    name: 'My first linkss',
     note: 'This is the default link',
     color: '#FFFFFF',
   },
   {
     link: 'https://people.rit.edu/jz2728',
-    name: 'My first link',
+    name: 'My first linksss',
     note: 'This is the default link',
     color: '#FFFFFF',
   },
@@ -138,6 +138,24 @@ const addLink = (request, response, body) => {
   return sendJSONResponse(request, response, responseCode, responseJSON);
 };
 
+const deleteLink = (request, response, body) => {
+  // here we are assuming an error, pessimistic aren't we?
+  const responseCode = 400; // 400=bad request
+  const responseJSON = {
+    id: 'missingParams',
+    message: 'name and age are both required',
+  };
+
+  for (let i = 0; i < linknote.links.length; i += 1) {
+    if (body.name === linknote.links[i].name) {
+      linknote.links.splice(i, 1);
+    }
+  }
+
+  linknote.counter.number -= 1;
+  return sendJSONResponse(request, response, responseCode, responseJSON);
+};
+
 const getLinkResponse = (request, response, params, acceptedTypes, httpMethod) => {
   if (httpMethod === 'HEAD') {
     if (acceptedTypes === 'text/xml') {
@@ -158,3 +176,4 @@ const getLinkResponse = (request, response, params, acceptedTypes, httpMethod) =
 
 module.exports.getLinkResponse = getLinkResponse;
 module.exports.addLink = addLink;
+module.exports.deleteLink = deleteLink;

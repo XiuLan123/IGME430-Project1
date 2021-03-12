@@ -1,8 +1,12 @@
+* {
+    font-family: 'DotGothic16', sans-serif;
+}
+
 nav {
-    position: -webkit-sticky;
     position: sticky;
-    top: 0;
     float: right;
+    top: 0;
+    font-size: 1.5em;
 }
 
 .navLinks {

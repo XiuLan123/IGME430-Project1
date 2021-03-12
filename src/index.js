@@ -44,6 +44,27 @@ const handlePost = (request, response, parsedUrl) => {
       jsonHandler.addLink(request, response, bodyParams);
     });
   }
+
+  if (parsedUrl.pathname === '/delete-link') {
+    const body = [];
+
+    // https://nodejs.org/api/http.html
+    request.on('error', (err) => {
+      console.dir(err);
+      response.statusCode = 400;
+      response.end();
+    });
+
+    request.on('data', (chunk) => {
+      body.push(chunk);
+    });
+
+    request.on('end', () => {
+      const bodyString = Buffer.concat(body).toString(); // name=tony&age=35
+      const bodyParams = query.parse(bodyString); // turn into an object with .name & .age
+      jsonHandler.deleteLink(request, response, bodyParams);
+    });
+  }
 };
 
 const onRequest = (request, response) => {
