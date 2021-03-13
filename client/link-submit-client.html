@@ -91,7 +91,7 @@
             font-size: 1.5em;
         }
 
-        h2{
+        h2 {
             font-size: 3em;
             color: white;
         }
@@ -119,6 +119,7 @@
     <script>
         "use strict"; // because I got rid of client-side babel
         const parseJSON = (xhr, content) => {
+            console.log(xhr.response);
             if (xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json') {
                 const obj = JSON.parse(xhr.response);
                 console.dir(obj);
@@ -197,11 +198,11 @@
     <nav>
         <a class="navLinks" href="/home-client">Home</a>
         <br>
-        <a class="navLinks" href="/admin-client">Admin</a>
-        <br>
         <a class="navLinks" href="/link-submit">Submit</a>
         <br>
         <a class="navLinks" href="/links-client">Links</a>
+        <br>
+        <a class="navLinks" href="/admin-client">Admin</a>
     </nav>
     <header>
         <h1><u>Http:// Link Sumbit</u></h1>

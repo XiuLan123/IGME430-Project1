@@ -18,10 +18,11 @@ const linknote = {
       color: '#FFFFFF',
     },
   ],
-  counter: {
-    number: 1,
-  },
 };
+
+// Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
+// Refactored to an arrow function by ACJ
+const getBinarySize = (string) => Buffer.byteLength(string, 'utf8');
 
 const sendJSONResponse = (request, response, responseCode, object) => {
   response.writeHead(responseCode, {
@@ -39,49 +40,51 @@ const sendXMLResponse = (request, response, responseCode, object) => {
   response.end();
 };
 
-// "Meta" refers to *meta data*, in this case the HTTP headers
-const sendJSONResponseHeaders = (request, response, responseCode) => {
-  response.writeHead(responseCode, {
-    'Content-Type': 'application/json',
-  });
-  response.end();
-};
-
-const sendXMLResponseHeaders = (request, response, responseCode) => {
-  response.writeHead(responseCode, {
-    'Content-Type': 'text/xml',
-  });
-  response.end();
-};
-
 const getLinks = (request, response, params) => {
-  let responseObj = linknote;
-  if (params.name != null) {
-    for (let i = 0; i < linknote.links.length; i += 1) {
-      if (linknote.links[i].name === params.name) {
-        responseObj = linknote.links[i];
+  let responseObj = [];
+
+  if (params === undefined) {
+    responseObj = linknote;
+  } else if (params.name !== undefined && linknote.links.length !== 0) {
+    if (params.name === 'random') {
+      responseObj.push(linknote.links[Math.floor(Math.random() * linknote.links.length)]);
+    } else {
+      for (let i = 0; i < linknote.links.length; i += 1) {
+        if (linknote.links[i].name.includes(params.name.toString())) {
+          responseObj.push(linknote.links[i]);
+        }
       }
     }
+  } else {
+    responseObj = linknote;
   }
+
   sendJSONResponse(request, response, 200, responseObj);
 };
 
-const getLinksXML = (request, response, params) => {
-  const limit2 = Number(params.limit);
+const getLinksLenght = (request, response, params) => {
+  let responseObj = [];
 
-  if (limit2 === 1) {
-    const responseObj = linknote.links[0];
-    const xmlResponse = `
-    <linkobj>
-      <link>${responseObj.link}</link>
-      <name>${responseObj.name}</name>
-      <note>${responseObj.note}</note>
-      <color>${responseObj.color}</color>
-    </linkObj>
-    `;
-    sendXMLResponse(request, response, 200, xmlResponse);
+  if (params === undefined) {
+    responseObj = linknote;
+  } else if (params.name !== undefined && linknote.links.length !== 0) {
+    if (params.name === 'random') {
+      responseObj.push(linknote.links[Math.floor(Math.random() * linknote.links.length)]);
+    } else {
+      for (let i = 0; i < linknote.links.length; i += 1) {
+        if (linknote.links[i].name.includes(params.name.toString())) {
+          responseObj.push(linknote.links[i]);
+        }
+      }
+    }
+  } else {
+    responseObj = linknote;
   }
 
+  return JSON.stringify(responseObj);
+};
+
+const getLinksXML = (request, response) => {
   let xmlObj;
   let xmlList = `
   <links>
@@ -100,7 +103,46 @@ const getLinksXML = (request, response, params) => {
     xmlList += xmlObj;
   }
   xmlList += '</links>';
+
   sendXMLResponse(request, response, 200, xmlList);
+};
+
+const getLinksXMLLenght = () => {
+  let xmlObj;
+  let xmlList = `
+  <links>
+  `;
+
+  for (let i = 0; i < linknote.links.length; i += 1) {
+    const responseObj = linknote.links[i];
+    xmlObj = `
+    <linkobj>
+      <link>${responseObj.link}</link>
+      <name>${responseObj.name}</name>
+      <note>${responseObj.note}</note>
+      <color>${responseObj.color}</color>
+    </linkObj>
+    `;
+    xmlList += xmlObj;
+  }
+  xmlList += '</links>';
+  return xmlList;
+};
+
+const sendJSONResponseHeaders = (request, response, responseCode) => {
+  response.writeHead(responseCode, {
+    'Content-Type': 'application/json',
+    'Content-Length': getBinarySize(getLinksLenght()),
+  });
+  response.end();
+};
+
+const sendXMLResponseHeaders = (request, response, responseCode) => {
+  response.writeHead(responseCode, {
+    'Content-Type': 'text/xml',
+    'Content-Length': getBinarySize(getLinksXMLLenght()),
+  });
+  response.end();
 };
 
 const addLink = (request, response, body) => {
@@ -108,7 +150,7 @@ const addLink = (request, response, body) => {
   let responseCode = 400; // 400=bad request
   const responseJSON = {
     id: 'missingParams',
-    message: 'name, age and link are required',
+    message: 'Name, age and link are required',
   };
 
   // missing name or age?
@@ -118,19 +160,20 @@ const addLink = (request, response, body) => {
 
   for (let i = 0; i < linknote.links.length; i += 1) {
     if (linknote.links[i].name === body.name) {
-      responseCode = 204;
       linknote.links[i].link = body.link;
       linknote.links[i].note = body.note;
       linknote.links[i].color = body.color;
       i = linknote.links.length;
-      return sendJSONResponseHeaders(request, response, responseCode);
+
+      responseCode = 204;
+      return sendJSONResponse(request, response, responseCode, responseJSON);
     }
   }
 
   // if the user does not exist
   const newItem = {
-    link: body.name,
-    name: body.link,
+    link: body.link,
+    name: body.name,
     note: body.note,
     color: body.color,
   };
@@ -139,26 +182,16 @@ const addLink = (request, response, body) => {
   responseCode = 201; // send "created" status code
   responseJSON.id = body.name;
   responseJSON.message = 'Link Created Successfully';
-  linknote.counter.number += 1;
   return sendJSONResponse(request, response, responseCode, responseJSON);
 };
 
 const deleteLink = (request, response, body) => {
-  // here we are assuming an error, pessimistic aren't we?
-  const responseCode = 400; // 400=bad request
-  const responseJSON = {
-    id: 'missingParams',
-    message: 'name and age are both required',
-  };
-
   for (let i = 0; i < linknote.links.length; i += 1) {
     if (body.name === linknote.links[i].name) {
       linknote.links.splice(i, 1);
     }
   }
-
-  linknote.counter.number -= 1;
-  return sendJSONResponse(request, response, responseCode, responseJSON);
+  return sendJSONResponse(request, response, 200, 'Deleted');
 };
 
 const getLinkResponse = (request, response, params, acceptedTypes, httpMethod) => {

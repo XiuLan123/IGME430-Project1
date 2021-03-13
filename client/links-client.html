@@ -100,12 +100,9 @@
         }
     </style>
     <script>
+
         const handleResponse = (e) => {
-            console.log("e.target =", e.target); //here. e.target is the xhr object
-            console.log("e.target.response = ", e.target.response);
-            const obj = JSON.parse(e.target.response); //turn it back into an object
-            console.log("obj=", obj);
-            console.log(obj.links);
+            const obj = JSON.parse(e.target.response);
 
             let linksContainer = document.querySelector("#linksContainer");
             if (obj.links != null) {
@@ -124,7 +121,7 @@
                         "></figure>
                         <div class="linksTitleArea">
                         <p class="linksTitle" onclick="window.open('${obj.links[i].link}')">
-                            <b><u>Http:// ${obj.links[i].name}</u></b>
+                            <b>${obj.links[i].name}</b>
                         </p>
                         </div>
                         <p class="linksNote">${obj.links[i].note}</p>
@@ -132,10 +129,12 @@
                     `;
                 }
             } else {
-                linksContainer.innerHTML =
-                    `<div class="linksBlock">
+                linksContainer.innerHTML = "";
+                for (i in obj) {
+                    linksContainer.innerHTML +=
+                        `<div class="linksBlock">
                         <figure style="
-                        background:${obj.color};
+                        background:${obj[i].color};
                         border: 2px solid rgb(0, 0, 0);
                         border-radius: 50%;
                         width: 2vw;
@@ -144,23 +143,25 @@
                         margin-top:2vh;
                         "></figure>
                         <div class="linksTitleArea">
-                        <p class="linksTitle" onclick="window.open('${obj.link}')">
-                            <b><u>Http:// ${obj.name}</u></b>
+                        <p class="linksTitle" onclick="window.open('${obj[i].link}')">
+                            <b>${obj[i].name}</b>
                         </p>
                         </div>
-                        <p class="linksNote">${obj.note}</p>
+                        <p class="linksNote">${obj[i].note}</p>
                      </div>
                     `;
+                }
             }
         }
 
         const downloadLink = (e) => {
             console.log(`An element of id=${e.target.id} was clicked!`);
             const nameField = document.querySelector("#nameField");
-
             let linksURL = "/get-links";
             if (e.target.id == "getLinkBttn") {
                 linksURL = `/get-links?name=${nameField.value}`;
+            } else if (e.target.id == "getRandomLinksBttn") {
+                linksURL = `/get-links?name=random`;
             } else {
                 linksURL = "/get-links";
             }
@@ -175,6 +176,7 @@
         const init = () => {
             document.querySelector("#getLinkBttn").addEventListener("click", downloadLink);
             document.querySelector("#getLinksBttn").addEventListener("click", downloadLink);
+            document.querySelector("#getRandomLinksBttn").addEventListener("click", downloadLink);
         }
 
         window.onload = init;
@@ -185,11 +187,11 @@
     <nav>
         <a class="navLinks" href="/home-client">Home</a>
         <br>
-        <a class="navLinks" href="/admin-client">Admin</a>
-        <br>
         <a class="navLinks" href="/link-submit">Submit</a>
         <br>
         <a class="navLinks" href="/links-client">Links</a>
+        <br>
+        <a class="navLinks" href="/admin-client">Admin</a>
     </nav>
     <header>
         <h1><u>Http:// Links</u></h1>
@@ -199,7 +201,8 @@
     <section>
         <input id="nameField" type="text" />
         <p><button id="getLinkBttn">Search Link</button></p>
-        <p><button id="getLinksBttn">Random Links</button></p>
+        <p><button id="getRandomLinksBttn">Random Links</button></p>
+        <p><button id="getLinksBttn">All Links</button></p>
         <div id="linksContainer">
 
         </div>

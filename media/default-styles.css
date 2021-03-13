@@ -30,7 +30,7 @@ nav {
 }
 
 
-.navLinks:active{
+.navLinks:active {
     color: rgb(255, 0, 0);
 }
 
@@ -42,12 +42,13 @@ header {
 }
 
 h1 {
+    color: #15559a;
     font-family: fantasy;
     filter: drop-shadow(5px 5px 2px #000522);
     text-align: center;
 }
 
-#content{
+#content {
     margin: auto;
     text-align: center;
     font-size: 1.5em;
