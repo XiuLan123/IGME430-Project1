@@ -90,9 +90,9 @@
     </style>
     <script>
         const handleResponse = (e) => {
-            console.log("e.target =", e.target); //here. e.target is the xhr object
+            console.log("e.target =", e.target);
             console.log("e.target.response = ", e.target.response);
-            const obj = JSON.parse(e.target.response); //turn it back into an object
+            const obj = JSON.parse(e.target.response);
             console.log("obj=", obj);
             console.log(obj.links);
 

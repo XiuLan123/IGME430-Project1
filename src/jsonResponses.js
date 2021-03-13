@@ -1,22 +1,22 @@
 const linknote = {
   links: [{
-      link: 'https://people.rit.edu/jz2728',
-      name: 'My first links',
-      note: 'This is the default link',
-      color: '#FFFFFF',
-    },
-    {
-      link: 'https://people.rit.edu/jz2728',
-      name: 'My first linkss',
-      note: 'This is the default link',
-      color: '#FFFFFF',
-    },
-    {
-      link: 'https://people.rit.edu/jz2728',
-      name: 'My first linksss',
-      note: 'This is the default link',
-      color: '#FFFFFF',
-    },
+    link: 'https://people.rit.edu/jz2728',
+    name: 'My first links',
+    note: 'This is the default link',
+    color: '#FFFFFF',
+  },
+  {
+    link: 'https://people.rit.edu/jz2728',
+    name: 'My first linkss',
+    note: 'This is the default link',
+    color: '#FFFFFF',
+  },
+  {
+    link: 'https://people.rit.edu/jz2728',
+    name: 'My first linksss',
+    note: 'This is the default link',
+    color: '#FFFFFF',
+  },
   ],
 };
 
@@ -24,6 +24,7 @@ const linknote = {
 // Refactored to an arrow function by ACJ
 const getBinarySize = (string) => Buffer.byteLength(string, 'utf8');
 
+// Get the the json content
 const sendJSONResponse = (request, response, responseCode, object) => {
   response.writeHead(responseCode, {
     'Content-Type': 'application/json',
@@ -32,6 +33,7 @@ const sendJSONResponse = (request, response, responseCode, object) => {
   response.end();
 };
 
+// Send the the XML content
 const sendXMLResponse = (request, response, responseCode, object) => {
   response.writeHead(responseCode, {
     'Content-Type': 'text/xml',
@@ -40,6 +42,7 @@ const sendXMLResponse = (request, response, responseCode, object) => {
   response.end();
 };
 
+// Get the the json content
 const getLinks = (request, response, params) => {
   let responseObj = [];
 
@@ -62,6 +65,7 @@ const getLinks = (request, response, params) => {
   sendJSONResponse(request, response, 200, responseObj);
 };
 
+// Get the content-lenght for json content
 const getLinksLenght = (request, response, params) => {
   let responseObj = [];
 
@@ -84,6 +88,7 @@ const getLinksLenght = (request, response, params) => {
   return JSON.stringify(responseObj);
 };
 
+// Get the the XML content
 const getLinksXML = (request, response) => {
   let xmlObj;
   let xmlList = `
@@ -107,6 +112,7 @@ const getLinksXML = (request, response) => {
   sendXMLResponse(request, response, 200, xmlList);
 };
 
+// Get the content-lenght for xml content
 const getLinksXMLLenght = () => {
   let xmlObj;
   let xmlList = `
@@ -129,6 +135,7 @@ const getLinksXMLLenght = () => {
   return xmlList;
 };
 
+// Send json headers when it is head request
 const sendJSONResponseHeaders = (request, response, responseCode) => {
   response.writeHead(responseCode, {
     'Content-Type': 'application/json',
@@ -137,6 +144,7 @@ const sendJSONResponseHeaders = (request, response, responseCode) => {
   response.end();
 };
 
+// Send XML headers when it is head request
 const sendXMLResponseHeaders = (request, response, responseCode) => {
   response.writeHead(responseCode, {
     'Content-Type': 'text/xml',
@@ -145,15 +153,15 @@ const sendXMLResponseHeaders = (request, response, responseCode) => {
   response.end();
 };
 
+// Add link to the database
 const addLink = (request, response, body) => {
-  // here we are assuming an error, pessimistic aren't we?
-  let responseCode = 400; // 400=bad request
+  let responseCode = 400;
   const responseJSON = {
     id: 'missingParams',
     message: 'Name, age and link are required',
   };
 
-  // missing name or age?
+  // missing anything?
   if (!body.name || !body.link || !body.note || !body.color) {
     return sendJSONResponse(request, response, responseCode, responseJSON);
   }
@@ -170,7 +178,7 @@ const addLink = (request, response, body) => {
     }
   }
 
-  // if the user does not exist
+  // if the link does not exist
   const newItem = {
     link: body.link,
     name: body.name,
@@ -179,12 +187,13 @@ const addLink = (request, response, body) => {
   };
   linknote.links.push(newItem);
 
-  responseCode = 201; // send "created" status code
+  responseCode = 201;
   responseJSON.id = body.name;
   responseJSON.message = 'Link Created Successfully';
   return sendJSONResponse(request, response, responseCode, responseJSON);
 };
 
+// Delete link in admin
 const deleteLink = (request, response, body) => {
   for (let i = 0; i < linknote.links.length; i += 1) {
     if (body.name === linknote.links[i].name) {
@@ -194,6 +203,7 @@ const deleteLink = (request, response, body) => {
   return sendJSONResponse(request, response, 200, 'Deleted');
 };
 
+// Check to see if it is head or post request
 const getLinkResponse = (request, response, params, acceptedTypes, httpMethod) => {
   if (httpMethod === 'HEAD') {
     if (acceptedTypes === 'text/xml') {

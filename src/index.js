@@ -7,7 +7,6 @@ const htmlHandler = require('./htmlResponses.js');
 const jsonHandler = require('./jsonResponses.js');
 const mediaHandler = require('./mediaResponses.js');
 
-// 3 - locally this will be 3000, on Heroku it will be assigned
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
@@ -39,8 +38,8 @@ const handlePost = (request, response, parsedUrl) => {
     });
 
     request.on('end', () => {
-      const bodyString = Buffer.concat(body).toString(); // name=tony&age=35
-      const bodyParams = query.parse(bodyString); // turn into an object with .name & .age
+      const bodyString = Buffer.concat(body).toString();
+      const bodyParams = query.parse(bodyString);
       jsonHandler.addLink(request, response, bodyParams);
     });
   }
@@ -60,8 +59,8 @@ const handlePost = (request, response, parsedUrl) => {
     });
 
     request.on('end', () => {
-      const bodyString = Buffer.concat(body).toString(); // name=tony&age=35
-      const bodyParams = query.parse(bodyString); // turn into an object with .name & .age
+      const bodyString = Buffer.concat(body).toString();
+      const bodyParams = query.parse(bodyString);
       jsonHandler.deleteLink(request, response, bodyParams);
     });
   }
@@ -77,9 +76,8 @@ const onRequest = (request, response) => {
   } = parsedUrl;
 
   if (request.method === 'POST') {
-    // handle POST
     handlePost(request, response, parsedUrl);
-    return; // bail out of function
+    return;
   }
 
   const params = query.parse(parsedUrl.query);
@@ -92,5 +90,4 @@ const onRequest = (request, response) => {
   }
 };
 
-// 8 - create the server, hook up the request handling function, and start listening on `port`
 http.createServer(onRequest).listen(port);

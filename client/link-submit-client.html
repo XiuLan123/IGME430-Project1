@@ -117,7 +117,7 @@
         }
     </style>
     <script>
-        "use strict"; // because I got rid of client-side babel
+        "use strict";
         const parseJSON = (xhr, content) => {
             console.log(xhr.response);
             if (xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json') {
@@ -154,10 +154,6 @@
         };
 
         const uploadLink = (e) => {
-            // remember that an `Event` object gets passed along every time that an event handler or listener calls a function
-            // the `target` property of that event points at the element that sent the event, in this case a button
-            console.log(`An element of id=${e.target.id} was clicked!`);
-
             const nameField = document.querySelector("#nameField");
             const linkField = document.querySelector("#linkField");
             const noteField = document.querySelector("#noteField");
@@ -167,8 +163,6 @@
 
             const xhr = new XMLHttpRequest();
             xhr.open("POST", addLinkURL);
-            //with XHR, after we open a connection, but before we send(), we can set 1 or more HTTP request headers
-            //this isn't strictly necessary  because "/random-joke" sends JSON by default
             xhr.setRequestHeader('Accept', 'application/json');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -180,14 +174,7 @@
         }
 
         const init = () => {
-            // An Event *Handler*
-            // document.querySelector("#btnJoke").onclick = downloadJoke; // same as below, less typing, use which ever version you prefer
-
-            // An Event *Listener*
-
             document.querySelector("#btnSend").addEventListener("click", uploadLink);
-
-            // **Actually, event handlers and listeners are NOT exactly the same in all use cases - what ARE the differences?**
         }
 
         window.onload = init;
@@ -211,13 +198,13 @@
     </div>
     <section>
         <h2>Create Link</h2>
-        <label for="name">Name: </label>
+        <label for="nameField">Name: </label>
         <input id="nameField" type="text" />
-        <label for="link">Link: </label>
-        <input id="linkField" type="text" min="0" max="100" />
-        <label for="note">Note: </label>
-        <input id="noteField" type="text" min="0" max="1000" />
-        <label for="color">Color: </label>
+        <label for="linkField">Link: </label>
+        <input id="linkField" type="text" />
+        <label for="noteField">Note: </label>
+        <input id="noteField" type="text" />
+        <label for="colorPicker">Color: </label>
         <input id="colorPicker" type="color" />
         <button id="btnSend">Add Link</button>
     </section>
