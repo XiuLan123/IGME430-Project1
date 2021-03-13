@@ -1,0 +1,14 @@
+What your site does and its purpose.
+	My website is called Linknote, and its goal is to help people find websites, as well as store them.
+
+What part of your app does the API handle?
+	Store links and get links.
+	
+What went right and what went wrong?
+	I don't think anything has gone in the wrong direction, and so far the overall functionality has met my expectations.
+
+If you were to continue, what would you do to improve your app?
+	I will add the ability to sort by color and the ability for users to give links a tag.
+
+How did you go above and beyond?
+	I think I did a good job with my CSS, and I spent a long time designing it.

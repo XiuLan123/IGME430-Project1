@@ -1,23 +1,10 @@
 const linknote = {
   links: [{
-    link: 'https://people.rit.edu/jz2728',
-    name: 'My first links',
-    note: 'This is the default link',
-    color: '#FFFFFF',
-  },
-  {
-    link: 'https://people.rit.edu/jz2728',
-    name: 'My first linkss',
-    note: 'This is the default link',
-    color: '#FFFFFF',
-  },
-  {
-    link: 'https://people.rit.edu/jz2728',
-    name: 'My first linksss',
-    note: 'This is the default link',
-    color: '#FFFFFF',
-  },
-  ],
+    link: 'https://google.com',
+    name: 'Google',
+    note: 'This is google',
+    color: '#229453',
+  }, ],
 };
 
 // Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
